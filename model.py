@@ -65,6 +65,12 @@ def solve(input_data, optimise=False, timeout=120, out=True):
         m = solver.model()
 
         ### Builds (day, seshnum):(subject, task)
+        task_at_session = m["task_at_session"]
+        timetable = {}
+        for (day, sesh_num, subject, task), doing in task_at_session.items():
+            if doing:
+                timetable[day, sesh_num] = (subject, task)
+
 
 
 
