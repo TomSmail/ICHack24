@@ -59,6 +59,7 @@ def build_constraints(input_data: Dict[str, Any], reduce_factor):
 
 
 def solve(input_data, timeout=120, out=True):
+    print(input_data)
     subjects = input_data["subjects"]
     possible_tasks = input_data["possible_tasks"]
     sessions_per_day = input_data["sessions_per_day"]
