@@ -7,6 +7,16 @@
       "default_popup": "extension.html",
       "default_icon": "logo.png"
     },
-    "permissions": ["storage","declarativeNetRequest"],    
-   "host_permissions" : [ "*://ichack-e82c16304232.herokuapp.com/"]
+    "permissions": ["storage", "declarativeNetRequest", "tabs"],
+    "background": {
+      "service_worker": "background.js"
+    },   
+    "host_permissions" : [ "*://ichack-e82c16304232.herokuapp.com/"],
+    "content_scripts": [
+    {
+      "matches": ["https://*/*"],
+      "js": ["content.js"]
+    }
+    ]
+
   }
