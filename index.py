@@ -2,7 +2,7 @@ from flask import Flask, send_from_directory, request
 import os
 from json import dumps
 from model import solve
-from calendar import save_calendar, make_calendar
+from calendar_generator import save_calendar, make_calendar
 
 from convert import convert
 

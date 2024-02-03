@@ -13,6 +13,7 @@ chrome.storage.sync.get("timetable", function (obj) {
 function setup() {
     let session_length = parseFloat(document.getElementById("session_length").value)
     let start_date = document.getElementById("start_date").value
+    let end_date = document.getElementById("end_date").value
     let start_time = document.getElementById("start_time").value
     let end_time = document.getElementById("end_time").value
 
@@ -30,6 +31,7 @@ function setup() {
     let jsonObj = {
        "session_length": session_length,
        "start_date": start_date,
+       "end_date": end_date,
        "start_time": start_time,
        "end_time": end_time,
        "subjects": subjects
