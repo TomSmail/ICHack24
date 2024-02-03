@@ -13,11 +13,11 @@ def hello():
 @app.route('/calculate_timetable', methods=['POST'])
 def calculate_timetable():
     content = request.get_json()
-    print(content['mytext'])
+    print(content['file_id'])
     return dumps({"locale":"fr-FR"})
 
 @app.route('/calendars/<path:path>')
 def send_report(path):
     return send_from_directory('calendars', path)
 
-app.run(host='0.0.0.0', port=PORT, debug=True)  
+app.run(host='0.0.0.0', port=PORT)  

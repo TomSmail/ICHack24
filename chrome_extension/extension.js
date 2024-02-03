@@ -35,7 +35,7 @@ function setup() {
        "subjects": subjects
     }
     chrome.storage.sync.set({'timetable': jsonObj});
-    document.getElementById("url_data").textContent = "done" // sendToBackend(jsonObj)
+    document.getElementById("url_data").textContent = sendToBackend(jsonObj)
 }
 
 function update() {
