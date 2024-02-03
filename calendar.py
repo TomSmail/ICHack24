@@ -30,16 +30,17 @@ def make_calendar(processed_data, timetable):
     for calday in range(number_of_days):
         for snum in range(num_sessions):
             e = ic.Event()
-            # subject, task = timetable[calday, snum]
-            subject,task = "Maths", "Notes"
-            event_start = start_date+datetime.timedelta(days=calday, hours=snum*session_length)
-            event_end = start_date+datetime.timedelta(days=calday, hours=(1+snum)*session_length)
-            e.add("summary", f"Subject: {subject} and task: {task}")
-            e.add("dtstart", event_start)
-            e.add("dtend", event_end)
-            if DEBUG:
-                print(f"Generated event {subject} task: {task} at {event_start} until {event_end} on (day:{calday}, session_num{snum})")
-            calendar.add_component(e)
+            if (calday, snum) in timetable:
+                subject, task = timetable[calday, snum]
+                # subject,task = "Maths", "Notes"
+                event_start = start_date+datetime.timedelta(days=calday, hours=snum*session_length)
+                event_end = start_date+datetime.timedelta(days=calday, hours=(1+snum)*session_length)
+                e.add("summary", f"Subject: {subject} and task: {task}")
+                e.add("dtstart", event_start)
+                e.add("dtend", event_end)
+                if DEBUG:
+                    print(f"Generated event {subject} task: {task} at {event_start} until {event_end} on (day:{calday}, session_num{snum})")
+                calendar.add_component(e)
     return calendar
 
 from random import *
@@ -53,6 +54,7 @@ def save_calendar(calendar):
 
 
 if __name__ == "__main__":
+    import model
     DEBUG = True
     tlist = []
     for i in range(3):
@@ -62,12 +64,14 @@ if __name__ == "__main__":
     processed_example = {"session_length": 1.5,
                          "start_date": datetime.datetime(year=2024, month=2, day=2, hour=9),
                          "end_date": datetime.datetime(year=2024, month=2, day=2, hour=9)+ datetime.timedelta(days=7),
-                         "number_of_days": 5,
+                         "number_of_days": 10,
                          "sessions_per_day": 4,
                          "subjects": ["Maths", "Physics", "French"],
-                         "tasks": {"Maths": tlist[0], "Physics": tlist[1], "French": tlist[2]}
+                         "tasks": {"Maths": tlist[0], "Physics": tlist[1], "French": tlist[2]},
+                         "possible_tasks": ["notes", "textbook", "past papers"]
                          }
 
-    tc = make_calendar(processed_example, {})
+    result = model.solve(processed_example)
+    tc = make_calendar(processed_example, result)
 
     save_calendar(tc)
