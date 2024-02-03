@@ -43,15 +43,10 @@ def make_calendar(processed_data, timetable):
                 calendar.add_component(e)
     return calendar
 
-from random import *
-def save_calendar(calendar):
-    randname = choices(ascii_lowercase, k=8)
-    f = open(os.path.join("calendars", f"{''.join(randname)}.ics"), "wb")
+def save_calendar(calendar, name):
+    f = open(os.path.join("calendars", f"{name}.ics"), "wb")
     f.write(calendar.to_ical())
     f.close()
-    return randname
-
-
 
 if __name__ == "__main__":
     import model

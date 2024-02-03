@@ -1,6 +1,10 @@
 from flask import Flask, send_from_directory, request
 import os
 from json import dumps
+from model import solve
+from calendar import save_calendar, make_calendar
+
+from convert import convert
 
 PORT = os.environ["PORT"]
 
@@ -12,9 +16,14 @@ def hello():
 
 @app.route('/calculate_timetable', methods=['POST'])
 def calculate_timetable():
-    content = request.get_json()
-    print(content['file_id'])
-    return dumps({"locale":"fr-FR"})
+    data = request.get_json()
+    processed_data = convert(data["timetable_data"])
+    name = str(data["file_id"])
+    timetable = solve(processed_data)
+    calendar = make_calendar(processed_data, timetable)
+    save_calendar(calendar, name)
+    print(f"Generated {name}.ics")
+    return dumps({"url_path":f"https://ichack-e82c16304232.herokuapp.com/calendars/{name}.ics"})
 
 @app.route('/calendars/<path:path>')
 def send_report(path):
