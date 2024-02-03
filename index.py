@@ -1,4 +1,7 @@
 from flask import Flask, send_from_directory
+import os
+PORT = os.environ["PORT"]
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -9,7 +12,7 @@ def hello():
 def send_report(path):
     return send_from_directory('calendars', path)
 
-app.run()
+app.run(port=PORT)
 # {
 # 	"session_length": 1,
 #   "start_time": "9:00",
