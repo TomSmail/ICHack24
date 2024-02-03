@@ -10,7 +10,7 @@ import os
 from z3 import *
 
 
-example_dict = {'session_length': 1.5, 'start_date': datetime.datetime(2024, 2, 3, 20, 54, 57, 508914), 'end_date': datetime.datetime(2024, 2, 10, 20, 54, 57, 508914), 'number_of_days': 5, 'sessions_per_day': 4, 'subjects': ['Maths', 'Physics', 'French'], 'possible_tasks': ['notes', 'past papers', 'textbook'], 'tasks': {'Maths': {'notes': [5, 6], 'past papers': [2, 5], 'textbook': [2, 7]}, 'Physics': {'notes': [1, 6], 'past papers': [5, 7], 'textbook': [3, 6]}, 'French': {'notes': [5, 5], 'past papers': [4, 6], 'textbook': [4, 7]}}}
+example_dict = {'session_length': 1.5, 'start_date': datetime.datetime(2024, 2, 3, 20, 54, 57, 508914), 'end_date': datetime.datetime(2024, 2, 10, 20, 54, 57, 508914), 'number_of_days': 100, 'sessions_per_day': 4, 'subjects': ['Maths', 'Physics', 'French'], 'possible_tasks': ['notes', 'past papers', 'textbook'], 'tasks': {'Maths': {'notes': [5, 6], 'past papers': [2, 5], 'textbook': [2, 7]}, 'Physics': {'notes': [1, 6], 'past papers': [5, 7], 'textbook': [3, 6]}, 'French': {'notes': [5, 5], 'past papers': [4, 6], 'textbook': [4, 7]}}}
 
 def build_constraints(input_data: Dict[str, Any]):
 
@@ -43,7 +43,16 @@ def build_constraints(input_data: Dict[str, Any]):
 
 
           constraints.append(AtMost(*doing, 1))
+  for subject in subjects:
+    for task in possible_tasks:
+      doing = []
+      for day in range(num_days):
+        for sesh_num in range(sessions_per_day):
+          doing.append(task_at_session[(day, sesh_num, subject, task)])
 
+      mi,ma = tasks[subject][task]
+      constraints.append(AtLeast(*doing, mi))
+      constraints.append(AtMost(*doing, ma))
 
 
   return constraints
@@ -64,6 +73,7 @@ def solve(input_data, optimise=False, timeout=120, out=True):
             raise TimeoutError
         m = solver.model()
 
+
         ### Builds (day, seshnum):(subject, task)
         task_at_session = m["task_at_session"]
         timetable = {}
@@ -72,35 +82,6 @@ def solve(input_data, optimise=False, timeout=120, out=True):
                 timetable[day, sesh_num] = (subject, task)
 
 
-
-
-# def main():
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument("input_file", help="JSON file describing problem to be solved.", type=Path)
-#     parser.add_argument("--timeout", default=60, help="Maximum time allowed for SMT solving.",
-#                         type=int)
-#     parser.add_argument("--opt", action="store_true", help="Find optimal plan.")
-#     args = parser.parse_args()
-
-#     input_file: Path = args.input_file
-#     optimise = args.opt
-#     timeout: int = args.timeout
-
-#     if timeout <= 0:
-#         print(f"Timeout value must be positive; got {timeout}.")
-#         sys.exit(1)
-#     if not input_file.is_file():
-#         print(f"The provided input file {input_file} does not exist.")
-#         sys.exit(1)
-
-#     input_data = validate_input(input_file)
-#     if input_data is None:
-#         sys.exit(1)
-#     try:
-#         solve(input_data, optimise, timeout)
-#     except TimeoutError:
-#         print("Computing a plan timed out")
-#         sys.exit(1)
 
 
 if __name__ == "__main__":
