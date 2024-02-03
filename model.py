@@ -10,9 +10,9 @@ import os
 from z3 import *
 
 
-example_dict = {'session_length': 1.5, 'start_date': datetime.datetime(2024, 2, 3, 20, 54, 57, 508914), 'end_date': datetime.datetime(2024, 2, 10, 20, 54, 57, 508914), 'number_of_days': 100, 'sessions_per_day': 4, 'subjects': ['Maths', 'Physics', 'French'], 'possible_tasks': ['notes', 'past papers', 'textbook'], 'tasks': {'Maths': {'notes': [5, 6], 'past papers': [2, 5], 'textbook': [2, 7]}, 'Physics': {'notes': [1, 6], 'past papers': [5, 7], 'textbook': [3, 6]}, 'French': {'notes': [5, 5], 'past papers': [4, 6], 'textbook': [4, 7]}}}
+example_dict = {'session_length': 1.5, 'start_date': datetime.datetime(2024, 2, 3, 20, 54, 57, 508914), 'end_date': datetime.datetime(2024, 2, 10, 20, 54, 57, 508914), 'number_of_days': 10, 'sessions_per_day': 4, 'subjects': ['Maths', 'Physics', 'French'], 'possible_tasks': ['notes', 'past papers', 'textbook'], 'tasks': {'Maths': {'notes': [5, 6], 'past papers': [2, 5], 'textbook': [2, 7]}, 'Physics': {'notes': [1, 6], 'past papers': [5, 7], 'textbook': [3, 6]}, 'French': {'notes': [5, 5], 'past papers': [4, 6], 'textbook': [4, 7]}}}
 
-def build_constraints(input_data: Dict[str, Any]):
+def build_constraints(input_data: Dict[str, Any], reduce_factor):
 
   constraints = []
   subjects = input_data["subjects"]
@@ -51,35 +51,51 @@ def build_constraints(input_data: Dict[str, Any]):
           doing.append(task_at_session[(day, sesh_num, subject, task)])
 
       mi,ma = tasks[subject][task]
-      constraints.append(AtLeast(*doing, mi))
-      constraints.append(AtMost(*doing, ma))
+      constraints.append(AtLeast(*doing, int(reduce_factor * mi)))
+      constraints.append(AtMost(*doing, int(reduce_factor * ma)))
 
 
   return constraints
 
 
-def solve(input_data, optimise=False, timeout=120, out=True):
-    constraints = build_constraints(input_data)
+def solve(input_data, timeout=120, out=True):
+    subjects = input_data["subjects"]
+    possible_tasks = input_data["possible_tasks"]
+    sessions_per_day = input_data["sessions_per_day"]
+    num_days = input_data["number_of_days"]
+
     m = None
-    if not optimise:
+    is_sat = False
+    reduce_factor = 1
+    while True:
+        constraints = build_constraints(input_data, reduce_factor)
         solver = Solver()
         solver.set(timeout=timeout*1000)
         solver.add(constraints)
-        if solver.check() == unsat:
-            if out:
-                print("No plan possible")
-            return None
+        is_sat = solver.check()
         if solver.reason_unknown() == "timeout":
             raise TimeoutError
-        m = solver.model()
+        if (is_sat):
+            break
+        reduce_factor -= 0.1
 
 
-        ### Builds (day, seshnum):(subject, task)
-        task_at_session = m["task_at_session"]
-        timetable = {}
-        for (day, sesh_num, subject, task), doing in task_at_session.items():
-            if doing:
-                timetable[day, sesh_num] = (subject, task)
+
+    m = solver.model()
+
+    ### Builds (day, seshnum):(subject, task)
+    timetable = {}
+    for day in range(num_days):
+        for sesh_num in range(sessions_per_day):
+            for subject in subjects:
+                for task in possible_tasks:
+                    if m[Bool(f'{subject}_{task}_at_{sesh_num}_of_day_{day}')]:
+                        timetable[day, sesh_num] = (subject, task)
+    print (timetable)
+
+
+    # task_at_session = m["task_at_session"]
+    # for (day, sesh_num, subject, task), doing in task_at_session.items():
 
 
 
