@@ -1,5 +1,7 @@
 from flask import Flask, send_from_directory
 import os
+from json import dumps
+
 PORT = os.environ["PORT"]
 
 app = Flask(__name__)
@@ -8,23 +10,14 @@ app = Flask(__name__)
 def hello():
 	return "Hello World"
 
+@app.route('/calculate_timetable', methods=['POST'])
+def calculate_timetable():
+    content = request.get_json()
+    print(content['file_id'])
+    return dumps({"locale":"fr-FR"})
+
 @app.route('/calendars/<path:path>')
 def send_report(path):
     return send_from_directory('calendars', path)
 
-app.run(host='0.0.0.0', port=PORT, debug=True)  
-# {
-# 	"session_length": 1,
-#   "start_time": "9:00",
-#   "end_time": "13:00",
-#   "subjects": [
-# 	   "maths": [
-#          "notes": {
-#             "min_time": 10,
-#             "max_time": 20
-#          }
-#          "textbook": ...
-#          "past papers": ...
-#       ]
-#   ]
-# }
+app.run(host='0.0.0.0', port=PORT)  
