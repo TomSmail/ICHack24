@@ -1,0 +1,12 @@
+{
+    "manifest_version": 3,
+    "name": "Study Buddy",
+    "description": "Base Level Extension",
+    "version": "1.0",
+    "action": {
+      "default_popup": "extension.html",
+      "default_icon": "logo.png"
+    },
+    "permissions": ["storage","declarativeNetRequest"],    
+   "host_permissions" : [ "*://ichack-e82c16304232.herokuapp.com/"]
+  }
