@@ -76,7 +76,7 @@ def solve(input_data, timeout=120, out=True):
         is_sat = solver.check()
         if solver.reason_unknown() == "timeout":
             raise TimeoutError
-        if (is_sat):
+        if (is_sat == sat):
             break
         reduce_factor -= 0.1
 
