@@ -1,3 +1,5 @@
+let activities = ['notes', 'textbook', 'pastpapers'];
+
 // Save it using the Chrome extension storage API.
 chrome.storage.sync.get("timetable", function (obj) {  
     let timetable = obj.timetable;
@@ -29,6 +31,7 @@ function setup() {
     ))
 
     let jsonObj = {
+       "possible_tasks": activities,
        "session_length": session_length,
        "start_date": start_date,
        "end_date": end_date,
@@ -51,6 +54,7 @@ function update() {
 
         console.log(timetable.subjects.filter(subj => subj.name == subject)[0])
         timetable = {
+            ...timetable,
             "subjects" : [
                 ...timetable.subjects.filter(subj => subj.name != subject),
                 {
@@ -106,7 +110,6 @@ function addsubject(name) {
     subjectContainer.appendChild(subjectTitle);
 
     // Create activities
-    let activities = ['notes', 'textbook', 'pastpapers'];
     activities.forEach(function(activityName) {
         let activityContainer = document.createElement('div');
         activityContainer.classList.add('activity');

@@ -42,6 +42,7 @@ def convert(json_data: Dict[str, Any]) -> Dict[str, Any]:
     subjects = process_activities(json_data["subjects"])
     processed_data["subjects"] = list(subjects.keys())
     processed_data["tasks"] = subjects
+    processed_data["possible_tasks"] = json_data["possible_tasks"]
     return processed_data
 
 
