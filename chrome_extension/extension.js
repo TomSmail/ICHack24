@@ -79,7 +79,7 @@ function sendToBackend(timetable_data) {
         }
         
         let body_data = {"file_id":id, timetable_data:timetable_data}
-        console.log(body_data)
+        console.log(JSON.stringify(body_data))
         fetch("https://ichack-e82c16304232.herokuapp.com/calculate_timetable", {
             method: 'POST',
             headers: {
