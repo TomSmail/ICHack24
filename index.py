@@ -28,7 +28,11 @@ def calculate_timetable():
 @app.route('/calendars/<path:path>')
 def send_report(path):
     response = make_response(send_from_directory('calendars', path))
-    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0"
+    response.headers["Content-type"] = "text/calendar; charset=utf-8"
+    response.headers["Content-Disposition"] = f"inline;filename={path}"
+    response.headers["Pragma"] = "no-cache"
+
     return response
 
 app.run(host='0.0.0.0', port=PORT)  
