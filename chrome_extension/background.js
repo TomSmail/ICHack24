@@ -41,16 +41,18 @@ chrome.tabs.onUpdated.addListener((tabId, info) => {
 
 function main(tab) {
     // Query current URL and call API 
-    chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
-        let currentUrl = tabs[0].url;
-        if (whiteListedUrls.includes(currentUrl)) {
-            console.log("Whitelisted URL, all is good!");
-        } else {
-            message = {url: currentUrl}
-            result = callApi(message, tab)
-        }
-        
-    });
+    is_supposed_to_be_studying().then((is_studying) => {if (is_studying) {
+        chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
+            let currentUrl = tabs[0].url;
+            if (whiteListedUrls.includes(currentUrl)) {
+                console.log("Whitelisted URL, all is good!");
+            } else {
+                message = {url: currentUrl}
+                result = callApi(message, tab)
+            }
+            
+        });
+    }})
 }
 
 function interpretJson(json, tab) {
@@ -66,4 +68,25 @@ function interpretJson(json, tab) {
     } else {
         console.log("Seems legit, move along.");
     }
+}
+
+function is_supposed_to_be_studying() {
+    return new Promise((resolve, reject) => {
+        chrome.storage.sync.get("timetable", (obj) => {
+            if (chrome.runtime.lastError) {
+                reject(chrome.runtime.lastError);
+            } else {
+                if (obj.timetable == undefined) {
+                    resolve(false);
+                } else {
+                    let t = obj.timetable;
+                    let mini = new Date(t["start_date"] + " " + t["start_time"]);
+                    let maxi = new Date(t["end_date"] +" " + t["end_time"]);
+                    console.log(mini)
+                    console.log(maxi)
+                    resolve(new Date() <= maxi && new Date() >= mini);
+                }
+            }
+        });
+    });
 }
