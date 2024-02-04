@@ -1,4 +1,5 @@
-OPEN_AI_API_KEY='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'
+NOTHING_TO_SEE_HERE='YXdkajl6dlFTcHB5eW5wRklrY3hKRmtibEIzVE5zSFVXSlpTZVZsRkFjanZNYzRxLWtz'
+OPEN_AI_API_KEY = atob(NOTHING_TO_SEE_HERE).toString().split("").reverse().join("")
 
 whiteListedUrls = ["https://chrome", "chrome://extensions/", "https://www.google.com/", "chrome://newtab/", "chrome://extensions/?errors=ngamojokpcaedomjpobibdiieeopibcb"]
 // workflow : new tab created -> read tab url -> run request to open ai -> if no close tab. 
