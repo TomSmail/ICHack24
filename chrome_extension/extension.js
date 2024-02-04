@@ -77,6 +77,23 @@ function update() {
     });
 }
 
+function pad(number) {
+    var x = String(number)
+    if (x.length == 1) {x = '0' + x}
+    return x
+}
+
+function advance_day() {
+    chrome.storage.sync.get("timetable", function (obj) {  
+        var timetable = obj.timetable;
+        var d = new Date(timetable["start_date"])
+        console.log(d)
+        d.setDate(d.getDate() + 1)
+        timetable["start_date"] = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
+        chrome.storage.sync.set({'timetable': timetable});
+        sendToBackend(timetable)
+    })
+}
 function sendToBackend(timetable_data) {
     chrome.storage.sync.get("id", async function (obj) {  
         let id = obj.id
@@ -142,3 +159,5 @@ function addsubject(name) {
 document.getElementById("setup_form").addEventListener("submit", (event) => {  event.preventDefault(); setup()})
 document.getElementById("update_timetable").onclick = update
 document.getElementById("addsubject").onclick = (event) => {addsubject(document.getElementById("subject_name").value)}
+document.getElementById("advance_day").onclick = advance_day
+
