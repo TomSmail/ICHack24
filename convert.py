@@ -10,7 +10,7 @@ def get_datetime(date: str, time: str) -> datetime:
 def get_total_days(start: str, end: str) -> int:
     start_date = datetime.strptime(start, "%Y-%m-%d")
     end_date = datetime.strptime(end, "%Y-%m-%d")
-    return (end_date - start_date).days
+    return (end_date - start_date).days + 1
 
 
 def session_per_day(start: str, end: str, session_len: float) -> int:
