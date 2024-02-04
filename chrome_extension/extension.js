@@ -24,8 +24,8 @@ function setup() {
             "name": subjectDiv.children[0].textContent,
             "activities": Array.from(subjectDiv.children).filter(ele => ele.classList.contains("activity")).map(ele => ({
                 "name":ele.children[0].id,
-                "max_time":parseInt(ele.children[1].value),
-                "min_time":parseInt(ele.children[2].value)
+                "min_time":parseInt(ele.children[1].value),
+                "max_time":parseInt(ele.children[2].value)
             }))
         })
     ))

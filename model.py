@@ -65,8 +65,6 @@ def solve(input_data, timeout=120, out=True):
     sessions_per_day = input_data["sessions_per_day"]
     num_days = input_data["number_of_days"]
 
-    m = None
-    is_sat = False
     reduce_factor = 1
     while True:
         constraints = build_constraints(input_data, reduce_factor)
@@ -79,8 +77,6 @@ def solve(input_data, timeout=120, out=True):
         if (is_sat == sat):
             break
         reduce_factor -= 0.1
-
-
 
     m = solver.model()
 
