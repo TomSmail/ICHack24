@@ -20,6 +20,9 @@ def get_daily(timetable, target_day):
 def make_calendar(processed_data, timetable):
     calendar = ic.Calendar()
 
+    calendar.add("x-wr-calname", "Study Timetable")
+    calendar.add("last-modified", datetime.datetime.now())
+
     num_sessions = processed_data["sessions_per_day"]
     session_length = processed_data["session_length"]
     start_date = processed_data["start_date"]
@@ -49,6 +52,7 @@ def save_calendar(calendar, name):
     f.close()
 
 if __name__ == "__main__":
+    from random import randint
     import model
     DEBUG = True
     tlist = []
@@ -69,4 +73,4 @@ if __name__ == "__main__":
     result = model.solve(processed_example)
     tc = make_calendar(processed_example, result)
 
-    save_calendar(tc)
+    save_calendar(tc, "blah")
