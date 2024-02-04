@@ -11,12 +11,5 @@
     "background": {
       "service_worker": "background.js"
     },   
-    "host_permissions" : [ "*://ichack-e82c16304232.herokuapp.com/"],
-    "content_scripts": [
-    {
-      "matches": ["https://*/*"],
-      "js": ["content.js"]
-    }
-    ]
-
+    "host_permissions" : [ "*://ichack-e82c16304232.herokuapp.com/"]
   }
