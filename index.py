@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory, request
+from flask import Flask, send_from_directory, request, make_response
 import os
 from json import dumps
 from model import solve
@@ -27,6 +27,8 @@ def calculate_timetable():
 
 @app.route('/calendars/<path:path>')
 def send_report(path):
-    return send_from_directory('calendars', path)
+    response = make_response(send_from_directory('calendars', path))
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    return response
 
 app.run(host='0.0.0.0', port=PORT)  
