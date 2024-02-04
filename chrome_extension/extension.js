@@ -40,7 +40,8 @@ function setup() {
        "subjects": subjects
     }
     chrome.storage.sync.set({'timetable': jsonObj});
-    document.getElementById("url_data").textContent = sendToBackend(jsonObj)
+    console.log()
+    sendToBackend(jsonObj)
 }
 
 function update() {
@@ -77,7 +78,7 @@ function update() {
 }
 
 function sendToBackend(timetable_data) {
-    chrome.storage.sync.get("id", function (obj) {  
+    chrome.storage.sync.get("id", async function (obj) {  
         let id = obj.id
         if (id == undefined) {
             id = Date.now() * 1000000 + Math.floor(Math.random() * 1000000);
@@ -93,8 +94,8 @@ function sendToBackend(timetable_data) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(body_data)
-        }).then(res => {
-            console.log(res)
+        }).then(resp => resp.json()).then(js => {
+            document.getElementById("url_data").textContent = js["url_path"]
         })
     });
 }
