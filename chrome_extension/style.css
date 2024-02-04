@@ -1,4 +1,58 @@
 body {
-    width: 600px; /* Set the width of the popup */
-    height: 200px; /* Set the height of the popup */
-  }
+  width: 600px; /* Set the width of the popup */
+  height: 200px; /* Set the height of the popup */
+  text-align: center;
+  background-color: #e6e8e6;
+  background-image: url("assets/7652324.jpg");
+  background-size: contain;
+}
+
+#main_content {
+  /* width: 80%; */
+  /* height: 80%; */
+  background-color: white;
+  border-radius: 5pt;
+  box-shadow: 2px 2px 2px grey;
+
+}
+
+.mulish-uniquifier {
+  font-family: "Mulish", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+}
+
+#setup_form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center the grid horizontally */
+  align-items: center; /* Center the grid vertically */
+}
+
+#main_grid_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+#main_grid {
+  /* width: 100%; */
+  display:grid;
+  grid-template-columns: max-content max-content;
+  grid-gap:5px;
+}
+
+#main_grid label       { text-align:right; }
+
+#subject_name {
+  margin-right: 20px;
+}
+
+input[type=submit], button, input[type=button] {
+  color: white;
+  background-color: orange;
+  outline: none;
+  border-radius: 5pt; 
+  border: 0pt;
+}

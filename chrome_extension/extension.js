@@ -156,8 +156,13 @@ function addsubject(name) {
     document.getElementById("subjects").appendChild(subjectContainer);
 }
 
+function clear_timetable() {
+    chrome.storage.sync.clear()
+    window.close()
+}
+
 document.getElementById("setup_form").addEventListener("submit", (event) => {  event.preventDefault(); setup()})
 document.getElementById("update_timetable").onclick = update
 document.getElementById("addsubject").onclick = (event) => {addsubject(document.getElementById("subject_name").value)}
 document.getElementById("advance_day").onclick = advance_day
-
+document.getElementById("clear_timetable").onclick = clear_timetable

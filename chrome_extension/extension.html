@@ -1,32 +1,47 @@
 <html>
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Roboto:wght@100&display=swap" rel="stylesheet">
+  </head>
   <noscript>
     Your javascript isn't working :(
   </noscript>
-  <body>
-    <span><h1>Study Buddy Revision Timetable Generator</h1></span>
-    
+  <body class="mulish-uniquifier">
+    <div id="main_content">
     <div id="setup_panel">
       <form id="setup_form">
-        <label for="session_length">Session Length (hours):</label>
-        <input type="number" id="session_length" name="session_length" required value="2"><br><br>
-        
-        <label for="start_date">Start Date:</label>
-        <input type="date" id="start_date" name="start_date" required value="2024-02-04"><br><br>
+        <h2 id="config_title">Study Configuration</h2><br>
 
-        <label for="end_date">End Date:</label>
-        <input type="date" id="end_date" name="end_date" required value="2024-02-08"><br><br>
+        <div id="main_grid_container">
+          <div id="main_grid">
+
+            <label for="session_length">Session Length (hours):</label>
+            <input type="number" id="session_length" name="session_length" required value="2">
+            
+            <label for="start_date">Start Date:</label>
+            <input type="date" id="start_date" name="start_date" required value="2024-02-04">
     
-        <label for="start_time">Start Time:</label>
-        <input type="time" id="start_time" name="start_time" required value="09:00"><br><br>
-    
-        <label for="end_time">End Time:</label>
-        <input type="time" id="end_time" name="end_time" required value="17:00"><br><br>
-        <h2>Subjects</h2>
-        <input type="text" id="subject_name" placeholder="Subject Name"/><input type="button" id="addsubject" value="Add Subject">
-          <div id="subjects">
+            <label for="end_date">End Date:</label>
+            <input type="date" id="end_date" name="end_date" required value="2024-02-08">
+        
+            <label for="start_time">Start Time:</label>
+            <input type="time" id="start_time" name="start_time" required value="09:00">
+        
+            <label for="end_time">End Time:</label>
+            <input type="time" id="end_time" name="end_time" required value="17:00">
+            
+          </div>
         </div>
-        <input type="submit" value="Generate Timetable!"/>   
-        <p type="text" id="url_data"></p>
+        <div id="rest">
+          <h2>Subjects</h2>
+          <input type="text" id="subject_name" placeholder="Subject Name"/><input type="button" id="addsubject" value="Add Subject">
+            <div id="subjects">
+          </div>
+          <br>
+          <input type="submit" value="Generate Timetable!"/>   
+          <p type="text" id="url_data"></p>
+        </div>
       </form>
     </div>
 
@@ -57,9 +72,9 @@
       <button id="update_timetable">Update Timetable!</button>   
       <p id="update_status"></p>
       <button id="advance_day">Advance Day</button>      
-
+      <button id="clear_timetable">Clear Timetable</button>      
     </div>
-
+  </div>
   </body>
   <link rel="stylesheet" type="text/css" href="style.css">
   <script src="extension.js" type="text/javascript"></script>
